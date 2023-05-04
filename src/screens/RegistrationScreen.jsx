@@ -1,5 +1,4 @@
-import React from "react";
-import { StatusBar } from "expo-status-bar";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,77 +8,131 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Keyboard,
+  Platform,
+  TouchableWithoutFeedback,
 } from "react-native";
 import AddPhotoUser from "../assets/img/add-photo.svg";
 
 const backgroundImage = require("../assets/img/background-image.jpeg");
 
-const RegisterScreen = () => {
-  return (
-    <View style={styles.backgroundWrap}>
-      <StatusBar style="auto" />
-      <ImageBackground style={styles.backgroundImage} source={backgroundImage}>
-        <View style={styles.form}>
-          <View style={styles.userPhotoWrap}>
-            <View style={styles.userPhotoContainer}>
-              <Image style={styles.userPhoto} />
-            </View>
-            {/* <Button title="Add foto user" onPress={() => Alert.alert("Test")}/> */}
-            <View style={styles.addUserIcon}>
-              <AddPhotoUser />
-            </View>
-          </View>
-          <View style={styles.header}>
-            <Text style={styles.headerTitle}>Регістрація</Text>
-          </View>
+const initialState = {
+  email: "",
+  login: "",
+  password: "",
+};
 
-          <TextInput style={styles.input} placeholder="Логін" />
-          <TextInput
-            style={styles.input}
-            placeholder="Адрес електронної пошти"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Пароль"
-            secureTextEntry={true}
-          />
-          <TouchableOpacity style={styles.registerBtn} activeOpacity={0.8}>
-            <Text>Зареєструватися</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.forLoginLink} activeOpacity={0.8}>
-            <Text>Вже є акаунт? Увійти</Text>
-          </TouchableOpacity>
-        </View>
-      </ImageBackground>
-    </View>
+const RegisterScreen = () => {
+  const [userData, setUserData] = useState(initialState);
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+
+  const keyboardHide = () => {
+    setIsShowKeyboard(false);
+    Keyboard.dismiss();
+    setUserData(initialState);
+    console.log(userData);
+  };
+
+  return (
+    <TouchableWithoutFeedback onPress={keyboardHide}>
+      <View style={styles.container}>
+        <ImageBackground
+          style={styles.backgroundImage}
+          source={backgroundImage}
+        >
+          <KeyboardAvoidingView
+            behavior={Platform.OS == "ios" ? "padding" : "height"}
+          >
+            <View
+              style={{
+                ...styles.form,
+                paddingBottom: isShowKeyboard ? 32 : 78,
+              }}
+            >
+              <View style={styles.userPhotoWrap}>
+                <View style={styles.userPhotoContainer}>
+                  <Image style={styles.userPhoto} />
+                </View>
+                <View style={styles.addUserIcon}>
+                  <AddPhotoUser />
+                </View>
+              </View>
+              <View style={styles.header}>
+                <Text style={styles.headerTitle}>Реєстрація</Text>
+              </View>
+              <TextInput
+                style={styles.input}
+                value={userData.login}
+                placeholder="Логін"
+                onChangeText={(value) =>
+                  setUserData((prevState) => ({ ...prevState, login: value }))
+                }
+                onFocus={() => setIsShowKeyboard(true)}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Адрес електронної пошти"
+                value={userData.email}
+                onChangeText={(value) =>
+                  setUserData((prevState) => ({ ...prevState, email: value }))
+                }
+                onFocus={() => setIsShowKeyboard(true)}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Пароль"
+                secureTextEntry={true}
+                value={userData.password}
+                onChangeText={(value) =>
+                  setUserData((prevState) => ({
+                    ...prevState,
+                    password: value,
+                  }))
+                }
+                onFocus={() => setIsShowKeyboard(true)}
+              />
+              <TouchableOpacity
+                style={styles.registerBtn}
+                activeOpacity={0.8}
+                onPress={keyboardHide}
+              >
+                <Text>Зареєструватися</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.forLoginLink} activeOpacity={0.8}>
+                <Text>Вже є акаунт? Увійти</Text>
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
+        </ImageBackground>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
-  backgroundWrap: {
+  container: {
     flex: 1,
+    backgroundColor: "#fff",
   },
   backgroundImage: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
     flex: 1,
+    alignItems: "center",
     justifyContent: "flex-end",
     resizeMode: "cover",
-    alignItems: "center",
   },
+  keyBoardView: { justifyContent: "flex-end" },
   form: {
-    paddingTop: 92,
-    paddingLeft: 16,
-    paddingRight: 16,
-    minHeight: 550,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     backgroundColor: "#FFFFFF",
-    width: Dimensions.get("window").width,
   },
   input: {
     height: 50,
     padding: 16,
+    marginHorizontal: 16,
     marginBottom: 16,
     backgroundColor: "#F6F6F6",
     borderRadius: 8,
@@ -90,7 +143,6 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: "center",
-    marginBottom: 32,
   },
   headerTitle: {
     fontFamily: "Roboto-Bold",
@@ -99,6 +151,8 @@ const styles = StyleSheet.create({
     lineHeight: 35,
     letterSpacing: 0.01,
     color: "#212121",
+    marginTop: 92,
+    marginBottom: 33,
   },
   userPhotoWrap: {
     position: "absolute",
@@ -126,6 +180,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     padding: 16,
     marginTop: 27,
+    marginHorizontal: 16,
     marginBottom: 16,
     justifyContent: "center",
     alignItems: "center",

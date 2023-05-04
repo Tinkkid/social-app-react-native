@@ -1,52 +1,98 @@
-import React from "react";
-import { StatusBar } from "expo-status-bar";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
   View,
-  Dimensions,
   ImageBackground,
+  Dimensions,
   TextInput,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Keyboard,
+  Platform,
 } from "react-native";
 
 const backgroundImage = require("../assets/img/background-image.jpeg");
 
+const initialState = {
+  email: "",
+  password: "",
+};
+
 const LoginScreen = () => {
+  const [userData, setUserData] = useState(initialState);
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+
+  const keyboardHide = () => {
+    setIsShowKeyboard(false);
+    Keyboard.dismiss();
+    setUserData(initialState);
+    console.log(userData);
+  };
+
   return (
-    <View style={styles.backgroundWrap}>
-      <StatusBar style="auto" />
+    <View style={styles.container}>
       <ImageBackground style={styles.backgroundImage} source={backgroundImage}>
-        <View style={styles.form}>
-          <View style={styles.header}>
-            <Text style={styles.headerTitle}>Увійти</Text>
+        <KeyboardAvoidingView
+          style={styles.keyBoardView}
+          behavior={Platform.OS == "ios" ? "padding" : "height"}
+        >
+          <View
+            style={{
+              ...styles.form,
+              paddingBottom: isShowKeyboard ? 32 : 78,
+            }}
+          >
+            <View style={styles.header}>
+              <Text style={styles.headerTitle}>Увійти</Text>
+            </View>
+
+            <TextInput
+              style={styles.input}
+              placeholder="Адрес електронної пошти"
+              value={userData.email}
+              onChangeText={(value) =>
+                setUserData((prevState) => ({ ...prevState, email: value }))
+              }
+              onFocus={() => setIsShowKeyboard(true)}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Пароль"
+              secureTextEntry={true}
+              value={userData.password}
+              onChangeText={(value) =>
+                setUserData((prevState) => ({
+                  ...prevState,
+                  password: value,
+                }))
+              }
+              onFocus={() => setIsShowKeyboard(true)}
+            />
+            <TouchableOpacity
+              style={styles.loginBtn}
+              activeOpacity={0.8}
+              onPress={keyboardHide}
+            >
+              <Text>Увійти</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.forRegisterLink}
+              activeOpacity={0.8}
+            >
+              <Text>Немає акаунта? Зареєструватись</Text>
+            </TouchableOpacity>
           </View>
-
-          <TextInput
-            style={styles.input}
-            placeholder="Адрес електронної пошти"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Пароль"
-            secureTextEntry={true}
-          />
-
-          <TouchableOpacity style={styles.loginBtn} activeOpacity={0.8}>
-            <Text>Увійти</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.forRegisterLink} activeOpacity={0.8}>
-            <Text>Немає акаунту? Зареєструватись</Text>
-          </TouchableOpacity>
-        </View>
+        </KeyboardAvoidingView>
       </ImageBackground>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  backgroundWrap: {
+  container: {
     flex: 1,
+    backgroundColor: "#fff",
   },
   backgroundImage: {
     width: Dimensions.get("window").width,
@@ -54,32 +100,27 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
     resizeMode: "cover",
-    alignItems: "center",
   },
+  keyBoardView: { justifyContent: "flex-end" },
   form: {
-    paddingTop: 92,
-    paddingLeft: 16,
-    paddingRight: 16,
-    minHeight: 550,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     backgroundColor: "#FFFFFF",
-    width: Dimensions.get("window").width,
   },
   input: {
     height: 50,
     padding: 16,
+    marginHorizontal: 16,
     marginBottom: 16,
     backgroundColor: "#F6F6F6",
+    borderRadius: 8,
     borderWidth: 1,
     borderColor: "#E8E8E8",
-    borderRadius: 8,
     fontSize: 16,
     fontFamily: "Roboto-Regular",
   },
   header: {
     alignItems: "center",
-    marginBottom: 32,
   },
   headerTitle: {
     fontFamily: "Roboto-Bold",
@@ -88,6 +129,8 @@ const styles = StyleSheet.create({
     lineHeight: 35,
     letterSpacing: 0.01,
     color: "#212121",
+    marginTop: 92,
+    marginBottom: 33,
   },
   loginBtn: {
     height: 51,
@@ -96,6 +139,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     padding: 16,
     marginTop: 27,
+    marginHorizontal: 16,
     marginBottom: 16,
     justifyContent: "center",
     alignItems: "center",
@@ -103,8 +147,8 @@ const styles = StyleSheet.create({
 
   forRegisterLink: {
     justifyContent: "center",
-    alignItems: "center",
     color: "#1B4371",
+    alignItems: "center",
   },
 });
 
