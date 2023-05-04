@@ -25,7 +25,11 @@ const LoginScreen = () => {
             style={styles.input}
             placeholder="Адрес електронної пошти"
           />
-          <TextInput style={styles.input} placeholder="Пароль" />
+          <TextInput
+            style={styles.input}
+            placeholder="Пароль"
+            secureTextEntry={true}
+          />
 
           <View>
             <Text style={styles.loginBtn}>Увійти</Text>
