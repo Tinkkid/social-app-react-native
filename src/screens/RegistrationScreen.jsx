@@ -43,10 +43,10 @@ const RegisterScreen = () => {
             placeholder="Пароль"
             secureTextEntry={true}
           />
-          <TouchableOpacity style={styles.registerBtn}>
+          <TouchableOpacity style={styles.registerBtn} activeOpacity={0.8}>
             <Text>Зареєструватися</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.forLoginLink}>
+          <TouchableOpacity style={styles.forLoginLink} activeOpacity={0.8}>
             <Text>Вже є акаунт? Увійти</Text>
           </TouchableOpacity>
         </View>

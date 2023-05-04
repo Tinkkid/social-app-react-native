@@ -32,10 +32,10 @@ const LoginScreen = () => {
             secureTextEntry={true}
           />
 
-          <TouchableOpacity style={styles.loginBtn}>
+          <TouchableOpacity style={styles.loginBtn} activeOpacity={0.8}>
             <Text>Увійти</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.forRegisterLink}>
+          <TouchableOpacity style={styles.forRegisterLink} activeOpacity={0.8}>
             <Text>Немає акаунту? Зареєструватись</Text>
           </TouchableOpacity>
         </View>
