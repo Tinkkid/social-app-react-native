@@ -8,6 +8,7 @@ import {
   Dimensions,
   Image,
   TextInput,
+  TouchableOpacity,
 } from "react-native";
 import AddPhotoUser from "../assets/img/add-photo.svg";
 
@@ -42,12 +43,12 @@ const RegisterScreen = () => {
             placeholder="Пароль"
             secureTextEntry={true}
           />
-          <View>
-            <Text style={styles.registerBtn}>Зареєструватися</Text>
-          </View>
-          <View>
-            <Text style={styles.forLoginLink}>Вже є акаунт? Увійти</Text>
-          </View>
+          <TouchableOpacity style={styles.registerBtn}>
+            <Text>Зареєструватися</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.forLoginLink}>
+            <Text>Вже є акаунт? Увійти</Text>
+          </TouchableOpacity>
         </View>
       </ImageBackground>
     </View>
@@ -126,12 +127,14 @@ const styles = StyleSheet.create({
     padding: 16,
     marginTop: 27,
     marginBottom: 16,
-    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   forLoginLink: {
-    textAlign: "center",
+    justifyContent: "center",
     color: "#1B4371",
+    alignItems: "center",
   },
 });
 

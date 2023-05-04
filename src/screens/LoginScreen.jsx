@@ -7,6 +7,7 @@ import {
   Dimensions,
   ImageBackground,
   TextInput,
+  TouchableOpacity,
 } from "react-native";
 
 const backgroundImage = require("../assets/img/background-image.jpeg");
@@ -31,14 +32,12 @@ const LoginScreen = () => {
             secureTextEntry={true}
           />
 
-          <View>
-            <Text style={styles.loginBtn}>Увійти</Text>
-          </View>
-          <View>
-            <Text style={styles.forRegisterLink}>
-              Немає акаунту? Зареєструватись
-            </Text>
-          </View>
+          <TouchableOpacity style={styles.loginBtn}>
+            <Text>Увійти</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.forRegisterLink}>
+            <Text>Немає акаунту? Зареєструватись</Text>
+          </TouchableOpacity>
         </View>
       </ImageBackground>
     </View>
@@ -98,11 +97,13 @@ const styles = StyleSheet.create({
     padding: 16,
     marginTop: 27,
     marginBottom: 16,
-    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   forRegisterLink: {
-    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
     color: "#1B4371",
   },
 });
